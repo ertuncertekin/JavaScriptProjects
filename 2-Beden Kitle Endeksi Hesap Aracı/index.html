@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <h1>Beden Kitle Endeksi Hesaplama</h1>
+    <ul>
+        <li>18, 5 kg/m² ‘nin altındaki sonuçlar: İdeal kilonun altında
+        </li>
+        <li>18, 5 kg/m² ile 24, 9 kg/m² arasındaki sonuçlar: İdeal kiloda
+        </li>
+        <li>25 kg/m² ile 29, 9 kg/m² arasındaki sonuçlar: İdeal kilonun üstünde
+        </li>
+        <li>30 kg/m² ile 39, 9 kg/m² arasındaki sonuçlar: İdeal kilonun çok üstünde (obez)
+        </li>
+        <li>40 kg/m² üzerindeki sonuçlar: İdeal kilonun çok üstünde (morbid obez)
+        </li>
+    </ul>
+
+    <form action="">
+
+        <div style="margin-bottom: 50px; margin-top: 30px;"> <label for="" style="width: 200px;">Vücut Ağırlığı:</label>
+            <input type="text" id="bodyWeight" placeholder="Lütfen Kilonuzu Giriniz." style="width: 230px;">
+        </div>
+
+
+        <div style="margin-bottom:30px"> <label for="" style="width: 200px;">Boy Uzunluğu:</label>
+            <input type="text" id="bodyHeight" placeholder="Lütfen Boyunuzu Cm Cinsinden Giriniz."
+                style="width: 230px;">
+        </div>
+
+        <input type="button" value="Hesapla" onclick="hesap()">
+
+    </form>
+
+    <h2 id="result"></h2>
+
+    <script>
+
+        //Vücut Ağırlığı (kg) / Boy Uzunluğunun Karesi (cm cinsinden iste)
+
+
+
+        function hesap() {
+
+            let userWeight = parseInt(document.querySelector("#bodyWeight").value)
+            let userHeight = parseInt(document.querySelector("#bodyHeight").value)
+            let final = Math.floor(userWeight / ((userHeight * userHeight) / 10000))
+
+            if (userWeight < 0 || userHeight < 0) { return alert("Değerler sıfırdan küçük olamaz.") }
+
+            let durum
+            if (final <= 18.5) {
+                durum = "İdeal kilonun altındasınız."
+            }
+            else if (final <= 25) {
+                durum = "İdeal Kilodasınız."
+            }
+            else if (final <= 30) {
+                durum = "İdeal Kilonun Üzerindesiniz."
+            }
+            else if (final <= 40) {
+                durum = "İdeal Kilonuzun çok üzerindesiniz."
+            }
+            else {
+                durum = "Doktora Görünmelisiniz"
+            }
+
+            document.querySelector("#result").innerHTML = "Vücut Kitle Endeksiniz: " + final + " Durumunuz: " + durum
+        }
+
+    </script>
+</body>
+
+</html>

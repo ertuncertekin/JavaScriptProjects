@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <h1>Faizsiz Kredi Tutarı Hesaplama Ekranı</h1>
+    <div style="margin-bottom:30px">
+        <input type="text" placeholder="Kredi Tutarını Giriniz" id="krediMiktar">
+    </div>
+    <select name="" id="aylar">
+    </select>
+    <input type="button" value="Hesapla" onclick="hesapla()">
+
+    <ol id="sonuc"></ol>
+
+    </script>
+</body>
+
+<script>
+
+    let selectElement = document.querySelector("#aylar")
+    for (let i = 1; i <= 12; i++) {
+        options = document.createElement("option")
+        options.text = i + " Ay"
+        options.value = Number(i)
+        selectElement.appendChild(options)
+    }
+
+    function hesapla() {
+        let kredi = Number(document.querySelector("#krediMiktar").value)
+        let ayListesi = document.querySelector("#aylar")
+        let aySayisi = ayListesi.options[ayListesi.selectedIndex].value
+        let liste = document.querySelector("#sonuc")
+        liste.innerHTML = ""
+        for (i = 1; i <= aySayisi; i++) {  //önce faizsiz bakalım
+            listElement = document.createElement("li")
+            listElement.textContent = "Toplam Ödeme: " + kredi + " TL" + " Aylık Ödeme: " + kredi / aySayisi + " TL " + i + "'inci Ayda Ödenen Toplam Tutar: " + (kredi / aySayisi) * i + " TL"
+            liste.appendChild(listElement)
+        }
+    }
+
+</script>
+
+</html>

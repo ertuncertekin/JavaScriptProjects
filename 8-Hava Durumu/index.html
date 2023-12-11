@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hava Durumu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="conainer">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-3 mt-5">
+                <div class="weatherTable bg-info fw-medium p-4 rounded shadow-lg border border-primary">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Şehir Adı Giriniz" id="countrySelect">
+                        <button class="btn btn-outline-success" type="button" id="countrySelectButton">Onayla</button>
+                    </div>
+                    <h3 class="text-center fw-medium" id="selectedCountry">Şehir Adı</h3>
+                    <div class="text-center mb-3">
+                        <img id="weatherIcon" src="" alt="">
+                    </div>
+                    <p class="" id="havaDurumu">Hava Durumu:</p>
+                    <p class="" id="havaSicakligi">Hava Sıcaklığı:</p>
+                    <p class="" id="nem">Nem Oranı:</p>
+                    <p class="" id="RüzgarDurumu">Rüzgar Durumu:</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        let btn1 = document.querySelector("#countrySelectButton")
+        btn1.addEventListener("click", async function () {
+            city = document.querySelector("#countrySelect")
+            selectedCity = city.value
+            city.value = "" //temizleme yaptık
+            const APIKEY = "679e590324b314ded3f6423b448fdc73"
+            const APIURL = "https://api.openweathermap.org/data/2.5/weather?" + "units=metric&" + "q=" + selectedCity + "&" + "appid=" + APIKEY
+            console.log(APIURL)
+            let response = await fetch(APIURL) //İstek Attık
+            let data = await response.json()
+            console.log(data)
+
+
+            //seçtiğin şehir province yazar ise province yazısı kalksın
+
+            let cityName = data.name
+            let havaDurumu = data.weather[0].description
+            let havaSicakligi = Math.round(Number(data.main.temp))
+            let nemOrani = data.main.humidity
+            let ruzgarDurumu = data.wind.speed
+            let myIcon = document.querySelector("#weatherIcon")
+
+            if (havaDurumu === "broken clouds") {
+                havaDurumu = "Parçalı Bulutlu"
+                myIcon.src = "./weatherimg/broken_clouds.png" //foto göstermeyi öğrendik
+            }
+            else if (havaDurumu === "clear sky") {
+                havaDurumu = "Açık Gökyüzü"
+                myIcon.src = "./weatherimg/sun.png"
+            }
+            else if (havaDurumu === "overcast clouds") {
+                havaDurumu = "Çok Bulutlu"
+            }
+            else if (havaDurumu === "scattered clouds") {
+                havaDurumu = "Yağmurlu"
+                myIcon.src = "./weatherimg/rainy.png"
+            }
+
+            document.querySelector("#selectedCountry").innerHTML = cityName
+            document.querySelector("#havaDurumu").innerHTML = `Hava Durumu: ${havaDurumu} `
+            document.querySelector("#havaSicakligi").innerHTML = `Hava Sıcaklığı: ${havaSicakligi}C°`
+            document.querySelector("#nem").innerHTML = `Nem Oranı: %${nemOrani}`
+            document.querySelector("#RüzgarDurumu").innerHTML = `Rüzgar Hızı: ${ruzgarDurumu} km/s`
+        })
+
+
+    </script>
+
+    <script src="https://kit.fontawesome.com/19da96925e.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
