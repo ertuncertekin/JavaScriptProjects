@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <nav class="navbar my-3">
+            <div class="container-fluid d-flex justify-content-center">
+                <a class="navbar-brand" href="#">
+                    <i class="fa-solid fa-bolt fa-bounce" style="color: #5392a2;"></i>
+                    Elektrik Hesap Aracı
+                </a>
+            </div>
+        </nav>
+        <div class="row">
+            <div class="col-sm-6 infoSide">
+                <h3 class="text-center my-2">Elektrik Tütekim Bilgileri</h3>
+                <img src="./img/info.jpg" alt="" class="w-100 infoImg">
+                <h4 class="mt-3 text-center">Tüketim Bilgileri;</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia harum, hic, consequuntur quos, vel
+                    unde at aliquid eos ullam quasi repellat ratione libero rem fuga. Vel tenetur ipsum totam
+                    praesentium obcaecati nisi natus rem vero, incidunt numquam molestiae aspernatur nostrum, sit
+                    voluptatem nam? Soluta, nisi minima? Ea ipsa, illo porro itaque impedit minus illum laboriosam,
+                    exercitationem iure vero quidem ratione, sit eligendi suscipit fugiat tempora nulla eum qui
+                    aspernatur ipsam aliquam. Ad sit natus laudantium, voluptatum, doloribus nobis nostrum dicta amet
+                    iste totam exercitationem. Distinctio debitis exercitationem iste minima delectus ea quisquam modi,
+                    magnam impedit inventore soluta sit neque odit repellat corrupti! Rerum laboriosam minima sed, saepe
+                    ipsum dignissimos voluptate harum provident iste quod modi accusantium ducimus, porro aliquid a
+                    dolores. Quia animi dolor eveniet veniam ipsa non magni laborum eum fuga dolores possimus laboriosam
+                    vitae molestias perferendis adipisci, ducimus aliquid aliquam hic necessitatibus. Aut odio iusto
+                    vero tempore velit?</p>
+            </div>
+            <div class="col-sm-6">
+                <h3 class="text-center">Hesap Aracı</h3>
+                <select class="form-select form-select-md mb-3" aria-label="Large select example" id="meskenSelect">
+                    <option selected>Lütfen Mesken Tipini Seçiniz</option>
+                </select>
+
+                <select class="form-select form-select-sm" aria-label="Small select example" id="miktarSelect">
+                    <option selected>Kullanım Miktarını Seçiniz</option>
+                </select>
+
+                <input id="wattInput" type="number" class="form-control my-3"
+                    placeholder="Ürünün Watt Değerini Giriniz. Örneğin 1500 Watt">
+
+                <h5 id="rangeShow">Kullanım Süresi</h5>
+                <input type="range" class="form-range mt-1" min="0" max="96" step="0,25" id="customRange3">
+
+                <div class="d-grid gap-2 my-3">
+                    <!-- <button class="btn btn-outline-primary" type="button" id="button-addon2">Hesapla</button> -->
+                </div>
+                <!-- <p id="sonuc"></p> -->
+
+
+
+
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    id="button-addon2">
+                    Hesapla
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="text-primary">Hesaplama Sonucu</h2>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p id="sonuc"></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Çıkış</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/19da96925e.js" crossorigin="anonymous"></script>
+    <script>
+
+
+
+        const range = document.querySelector("#customRange3")
+        range.addEventListener("change", function () {
+            const dakika = range.value * 15
+            const saat = Math.floor(dakika / 60) //ağağı yuvarlattık
+            const kalanDakika = dakika % 60 //60a göre modunu aldık
+            selectedRangeSaat = saat; // Saat bilgisini sakla global değişken yaptık başka fonksiyonda kullanabilmek için
+            selectedRangeDakika = kalanDakika; // Dakika bilgisini sakla
+            document.querySelector("#rangeShow").innerHTML = `${saat} Saat ${kalanDakika} Dakika`
+        })
+
+        const meskenSlct = document.querySelector("#meskenSelect")
+        const meskenTip = ["Konut", "Ticarethane"]
+        for (i = 0; i < meskenTip.length; i++) {
+            let opt1 = document.createElement("option")
+            opt1.text = meskenTip[i]
+            opt1.value = meskenTip[i]
+            meskenSlct.appendChild(opt1)
+        }
+
+        meskenSlct.addEventListener("change", function () {
+            const miktarSlct = document.querySelector("#miktarSelect")
+            // let myWattInput = document.querySelector("#wattInput").value
+            miktarSlct.innerHTML = ""
+            if (meskenSlct.value === "Konut") { // buraya değer atamak için select yapısındaki opsiyonların value değeri bana gerekiyor!!
+                let konutSelect = [
+                    {
+                        Miktar: "240 Watt'tan Düşük Kullanım",
+                        Bedel: 1.47
+                    },
+                    {
+                        Miktar: "240 Watt'tan Yüksek Kullanım",
+                        Bedel: 2.21
+                    }
+                ]
+                for (i = 0; i < konutSelect.length; i++) {
+                    let opt2 = document.createElement("option")
+                    opt2.text = konutSelect[i].Miktar
+                    opt2.value = konutSelect[i].Bedel
+                    miktarSlct.appendChild(opt2)
+                }
+            }
+            else if (meskenSlct.value === "Ticarethane") {
+                let opt3 = document.createElement("option")
+                opt3.text = "900 Watt'tan Düşük Kullanım"
+                opt3.value = 2.83
+                miktarSlct.appendChild(opt3)
+            }
+        })
+
+        let btn1 = document.querySelector("#button-addon2")
+        btn1.addEventListener("click", function () {
+            let sonucYazdir = document.querySelector("#sonuc")
+            let sonucMesken = Number(document.querySelector("#miktarSelect").value)
+            let myWattInput = document.querySelector("#wattInput")
+            let valuOfInput = Number(myWattInput.value)
+            if (valuOfInput < 0) {
+                return alert("Kilowatt Değeri 0'dan Küçük Olamaz")
+            }
+            myWattInput.value = ""  //temizleme
+            let selectedRangeHour = document.querySelector("#rangeShow").innerHTML
+            let sonucSaat = Number(selectedRangeSaat) + Number(selectedRangeDakika / 60) //30 dk kaç saat yapar denklemini kuralım (60a bölersek oluyor.)
+            let kullanimBedeli = (sonucMesken * (valuOfInput / 1000) * sonucSaat)// virgülden sonra 2 basamak gösterdi
+            console.log(`${sonucMesken} ${valuOfInput} ${sonucSaat} ${kullanimBedeli}`)
+            sonucYazdir.innerHTML = (`Günlük Kullanım Bedeli: ${(kullanimBedeli).toFixed(2)} TL <br> 
+            Haftalık Kullanım Bedeli: ${(kullanimBedeli * 7).toFixed(2)} TL <br>
+            Aylık Kullanım Bedeli:   ${(kullanimBedeli * 30).toFixed(2)} TL
+            `)
+        })
+
+
+        /*-Sonuç Kısmı Spesifik Olacak ve olabilcek hatalar veya negatif değerler engellenecek
+          -Konut 240 kwatt'a kadar 1 kw 1.47 TL
+          -Konut 240 kwattan sonra kadar 1 kw 2.21 TL bu ikisi ayrı önermeler olacak
+          -Ticarethane 900 kwatt'a kadar 1 kw 2,83 TL*/
+
+    </script>
+</body>
+
+</html>

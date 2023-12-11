@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borsa Tavan Taban Serisi Hesap Aracı</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+    <h1>Borsa Tavan Taban Serisi Hesap Aracı</h1>
+    <input type="number" id="lotFiyat">
+    <input type="number" id="lotAdet">
+    <select name="" id="tavanSayisi"></select>
+    <div id="takenData"></div>
+    <table id="hesapSonuc" class="table">
+        <thead>
+            <tr>
+                <th>Tavan Sırası</th>
+                <th>Tavan Lot Fiyatı</th>
+                <th>Paranızın Miktarı</th>
+                <th>Kar Miktarı</th>
+                <th>Kar Oranı</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <button id="button1">Tavan Serisi Hesapla</button>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let tavanSayisiInput = document.querySelector("#tavanSayisi");
+        let btn1 = document.querySelector("#button1");
+
+        for (let i = 1; i <= 20; i++) {
+            let opt1 = document.createElement("option");
+            opt1.text = i;
+            opt1.value = i;
+            tavanSayisiInput.appendChild(opt1);
+        }
+
+        btn1.addEventListener("click", function () {
+            let lotFiyatInput = parseFloat(document.querySelector("#lotFiyat").value);
+            let lotAdetInput = parseFloat(document.querySelector("#lotAdet").value);
+            let selectedTavan = parseInt(document.querySelector("#tavanSayisi").value);
+            let tableBody = document.querySelector("#hesapSonuc tbody");
+            let data = document.querySelector("#takenData");
+            tableBody.innerHTML = "";
+            document.querySelector("#lotFiyat").value = "";
+            document.querySelector("#lotAdet").value = "";
+            document.querySelector("#tavanSayisi").value = "";
+
+            for (let i = 1; i <= selectedTavan; i++) {
+                let tavandanSonraLotFiyat = (lotFiyatInput * 1.1 ** i).toFixed(2);
+                let yatirimYukselis = tavandanSonraLotFiyat * lotAdetInput;
+                let karMiktari = (yatirimYukselis - (lotFiyatInput * lotAdetInput)).toFixed(2);
+                let karOrani = (((yatirimYukselis / (lotFiyatInput * lotAdetInput)) - 1) * 100).toFixed(2);
+
+                let row = tableBody.insertRow();
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+                let cell3 = row.insertCell(2);
+                let cell4 = row.insertCell(3);
+                let cell5 = row.insertCell(4);
+
+                cell1.textContent = `${i}'İnci Tavan`;
+                cell2.textContent = tavandanSonraLotFiyat + " TL";
+                cell3.textContent = yatirimYukselis + " TL";
+                cell4.textContent = karMiktari + " TL";
+                cell5.textContent = "%" + karOrani;
+            }
+
+            data.innerHTML = `
+            Hisse Senedi Halka Arz Fiyatı: ${lotFiyatInput} TL <br>
+            Hisse Senedi Alınan Lot Adedi: ${lotAdetInput} <br>
+            Maliyet Tutarı: ${lotFiyatInput * lotAdetInput} TL
+            `;
+        });
+    </script>
+</body>
+
+</html>
